@@ -1,7 +1,8 @@
 import React from 'react'
 import Sidebar from './components/Sidebar'
 import Player from './components/Player'
-import PodcastList from './components/PodcastList'
+//import PodcastList from './components/PodcastList'
+import Display from './components/Display'
 
 
 const App = () => {
@@ -11,8 +12,7 @@ const App = () => {
       <div className='h-[90%] flex'>
         
       <Sidebar />
-      <PodcastList />
-      
+      <Display />
       </div>
       <Player />
       <div>
