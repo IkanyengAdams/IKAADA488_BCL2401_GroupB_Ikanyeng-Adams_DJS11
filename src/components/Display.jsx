@@ -39,9 +39,9 @@ const Display = () => {
                         <div>Error: {error.message}</div>
                     ) : (
                         podcasts.map((podcast) => (
-                            <div key={podcast.id} className="bg-white rounded-lg shadow-md p-4">
-                                <img src={podcast.image} alt={podcast.title} className="w-full h-32 object-cover rounded-md" />
-                                <h3 className="mt-2 text-lg font-bold">{podcast.title}</h3>
+                            <div key={podcast.id} className="bg-white text-black rounded-lg shadow-md p-4 flex flex-col items-center">
+                                <img src={podcast.image} alt={podcast.title} className="w-full h-auto rounded-md mb-2" />
+                                <h3 className="text-lg font-bold text-center">{podcast.title}</h3>
                             </div>
                         ))
                     )}

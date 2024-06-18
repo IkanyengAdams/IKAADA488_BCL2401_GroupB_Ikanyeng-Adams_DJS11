@@ -5,7 +5,7 @@ const DisplayHome = () => {
   return (
    <>
    <Navbar />
-   </>
+  </>
   )
 }
 
