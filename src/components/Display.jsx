@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import DisplayHome from './DisplayHome';
 import SeriesDetail from './SeriesDetail'; 
 import PodcastList from './PodcastList'; 
+import Favorites from './Favorites';
 
 const Display = () => {
     return (
@@ -13,6 +14,7 @@ const Display = () => {
                 <Route path="/" element={<DisplayHome />} />
                 <Route path="/series/:id" element={<SeriesDetail />} />
                 <Route path="/podcasts" element={<PodcastList />} />
+                <Route path="/favorites" element={<Favorites />} /> 
             </Routes>
         </div>
     );
