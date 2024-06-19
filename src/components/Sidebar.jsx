@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { assets } from '../spotify-assets/assets/assets';
 
 const Sidebar = () => {
     const navigate = useNavigate();
+    const [showSearchInput, setShowSearchInput] = useState(false);
+
+    const handleSearchClick = () => {
+        setShowSearchInput(true);
+    };
 
     return (
         <div className='w-[25%] h-full p-2 flex-col gap-2 text-white hidden lg:flex'>
@@ -12,10 +17,21 @@ const Sidebar = () => {
                     <img className='w-6' src={assets.home_icon} alt='' />
                     <p className='font-bold'>Home</p>
                 </div>
-                <div className='flex items-center gap-3 pl-8 cursor-pointer' onClick={() => navigate('/search')}>
-                    <img className='w-6' src={assets.search_icon} alt='' />
-                    <p className='font-bold'>Search</p>
-                </div>
+                {!showSearchInput && (
+                    <div className='flex items-center gap-3 pl-8 cursor-pointer' onClick={handleSearchClick}>
+                        <img className='w-6' src={assets.search_icon} alt='' />
+                        <p className='font-bold'>Search</p>
+                    </div>
+                )}
+                {showSearchInput && (
+                    <div className='flex items-center gap-3 pl-8 mt-2'>
+                        <input
+                            type="text"
+                            placeholder="Search podcasts"
+                            className="w-full px-4 py-2 rounded-md text-black"
+                        />
+                    </div>
+                )}
             </div>
             <div className='bg-[#2563EB] h-[85%] rounded'>
                 <div className='p-4 flex items-center justify-between'>
@@ -23,11 +39,7 @@ const Sidebar = () => {
                         <img className='w-8' src={assets.stack_icon} alt='' />
                         <p className='font-semibold'>Your Library</p>
                     </div>
-                    <div className='flex items-center gap-3'>
-                        <img className='w-5' src={assets.arrow_icon} alt='' />
-                        <img className='w-5' src={assets.plus_icon} alt='' />
                     </div>
-                </div>
                 <div className='p-4 bg-[#2563EB] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4'>
                     <h1>Create your first playlist</h1>
                     <p className='font-light'>It's easy, we will help you</p>
