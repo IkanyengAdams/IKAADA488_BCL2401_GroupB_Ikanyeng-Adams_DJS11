@@ -60,14 +60,15 @@ const SeriesDetail = () => {
                 </div>
             )}
             <h3 className="text-xl font-bold mb-2">Seasons</h3>
-            <ul className="list-disc list-inside">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {series.seasons.map((season) => (
-                    <li key={season.id}>
-                        <h4 className="text-lg font-semibold">{season.title}</h4>
-                        <p>{season.description}</p>
-                    </li>
+                    <div key={season.id} className="bg-white text-black rounded-lg shadow-md p-4">
+                        <img src={series.image} alt={series.title} className="w-full h-auto rounded-md mb-2" />
+                        <h4 className="text-lg font-semibold mb-2">{season.title}</h4>
+                        <p className="text-sm">{season.description}</p>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };
