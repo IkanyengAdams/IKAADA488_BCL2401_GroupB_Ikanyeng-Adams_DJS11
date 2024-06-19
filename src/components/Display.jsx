@@ -42,8 +42,8 @@ const Display = () => {
                         <div>Error: {error.message}</div>
                     ) : (
                         podcasts.map((podcast) => (
-                            <div key={podcast.id} className="bg-white text-black rounded-lg shadow-md p-4 flex flex-col items-center">
-                                <img src={podcast.image} alt={podcast.title} className="w-full h-auto rounded-md mb-2" />
+                            <div key={podcast.id} className="bg-white text-black rounded-lg shadow-md p-4 flex flex-col items-center cursor-pointer" onClick={() => navigate(`/series/${podcast.id}`)}>
+<img src={podcast.image} alt={podcast.title} className="w-full h-auto rounded-md mb-2" />
                                 <h3 className="text-lg font-bold text-center">{podcast.title}</h3>
                             </div>
                         ))
