@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import DisplayHome from './DisplayHome';
+import SeriesDetail from './SeriesDetail';
 
 const Display = () => {
     const [podcasts, setPodcasts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('https://podcast-api.netlify.app/')
@@ -29,6 +31,7 @@ const Display = () => {
         <div className='w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg:w-[75%] lg:ml-0'>
           <Routes>
                 <Route path="/" element={<DisplayHome />} />
+                <Route path="/series/:id" element={<SeriesDetail />} />
             </Routes>
             <div className="p-4 w-full">
                 <h2 className="text-2xl font-bold mb-4">Podcasts you might like...</h2>
