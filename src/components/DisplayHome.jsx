@@ -1,4 +1,4 @@
-import React from 'react'
+/*import React from 'react'
 import Navbar from './Navbar'
 
 const DisplayHome = () => {
@@ -9,4 +9,4 @@ const DisplayHome = () => {
   )
 }
 
-export default DisplayHome
+export default DisplayHome*/
