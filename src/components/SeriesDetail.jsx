@@ -41,7 +41,7 @@ const SeriesDetail = () => {
       })
       .then((data) => {
         setSeasonDetails(data);
-        setPodcasts(data.episodes);  // Assuming episodes array is available in the season details response
+        setPodcasts(data.episodes); 
       })
       .catch((error) => {
         console.error("Error fetching season details:", error);

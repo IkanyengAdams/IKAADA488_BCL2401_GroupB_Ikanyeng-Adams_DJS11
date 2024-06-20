@@ -16,7 +16,8 @@ const PodcastList = () => {
         return response.json();
       })
       .then((data) => {
-        setPodcasts(data);
+        const sortedData = data.sort((a, b) => a.title.localeCompare(b.title));
+        setPodcasts(sortedData);
         setLoading(false);
       })
       .catch((error) => {
