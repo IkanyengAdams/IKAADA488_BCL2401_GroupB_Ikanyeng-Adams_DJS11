@@ -16,6 +16,7 @@ const PodcastList = () => {
         return response.json();
       })
       .then((data) => {
+        // Sort the data alphabetically by title before setting it to state
         const sortedData = data.sort((a, b) => a.title.localeCompare(b.title));
         setPodcasts(sortedData);
         setLoading(false);
@@ -56,7 +57,7 @@ const PodcastList = () => {
           podcasts.map((podcast) => (
             <div
               key={podcast.id}
-              className="bg-white text-black rounded-lg shadow-md p-4 flex flex-col items-center cursor-pointer"
+              className="bg-white text-black rounded-lg shadow-md p-4 flex flex-col items-center cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={() => handleSeriesClick(podcast.id)}
             >
               <img src={podcast.image} alt={podcast.title} className="w-full h-48 object-cover rounded-md mb-2" />
