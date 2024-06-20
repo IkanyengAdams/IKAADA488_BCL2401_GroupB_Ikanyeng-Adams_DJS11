@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import SeriesDetail from './SeriesDetail'; 
 import PodcastList from './PodcastList'; 
 import Favorites from './Favorites';
-
+import SeasonDetail from './SeasonDetail';
 
 const Display = () => {
     return (
@@ -14,8 +14,10 @@ const Display = () => {
             <Routes>
                 
                 <Route path="/series/:id" element={<SeriesDetail />} />
+                <Route path="/season/:id" element={<SeasonDetail />} />
                 <Route path="/podcasts" element={<PodcastList />} />
                 <Route path="/favorites" element={<Favorites />} /> 
+                
             </Routes>
         </div>
     );
