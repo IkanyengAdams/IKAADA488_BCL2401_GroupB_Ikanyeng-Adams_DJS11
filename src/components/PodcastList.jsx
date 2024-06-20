@@ -1,5 +1,7 @@
+// PodcastList.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const PodcastList = () => {
     const [podcasts, setPodcasts] = useState([]);
@@ -30,8 +32,20 @@ const PodcastList = () => {
         navigate(`/series/${id}`);
     };
 
+    const handleSort = (order) => {
+        const sortedPodcasts = [...podcasts].sort((a, b) => {
+            if (order === 'asc') {
+                return a.title.localeCompare(b.title);
+            } else {
+                return b.title.localeCompare(a.title);
+            }
+        });
+        setPodcasts(sortedPodcasts);
+    };
+
     return (
         <div className="p-4 w-full">
+            <Navbar onSort={handleSort} />
             <h2 className="text-2xl font-bold mb-4">Podcasts you might like...</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {loading ? (
