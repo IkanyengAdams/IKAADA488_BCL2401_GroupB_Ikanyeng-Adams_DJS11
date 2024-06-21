@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const PodcastList = () => {
   const [podcasts, setPodcasts] = useState([]);
@@ -8,15 +8,14 @@ const PodcastList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://podcast-api.netlify.app/')
+    fetch("https://podcast-api.netlify.app/")
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((data) => {
-        // Sort the data alphabetically by title before setting it to state
         const sortedData = data.sort((a, b) => a.title.localeCompare(b.title));
         setPodcasts(sortedData);
         setLoading(false);
@@ -35,7 +34,7 @@ const PodcastList = () => {
 
   const handleSort = (order) => {
     const sortedPodcasts = [...podcasts].sort((a, b) => {
-      if (order === 'asc') {
+      if (order === "asc") {
         return a.title.localeCompare(b.title);
       } else {
         return b.title.localeCompare(a.title);
@@ -60,7 +59,11 @@ const PodcastList = () => {
               className="bg-white text-black rounded-lg shadow-md p-4 flex flex-col items-center cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={() => handleSeriesClick(podcast.id)}
             >
-              <img src={podcast.image} alt={podcast.title} className="w-full h-48 object-cover rounded-md mb-2" />
+              <img
+                src={podcast.image}
+                alt={podcast.title}
+                className="w-full h-48 object-cover rounded-md mb-2"
+              />
               <h3 className="text-lg font-bold text-center">{podcast.title}</h3>
               <p className="text-sm text-gray-700 text-center">
                 Last updated: {new Date(podcast.updated).toLocaleDateString()}

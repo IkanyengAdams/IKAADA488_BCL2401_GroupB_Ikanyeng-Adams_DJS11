@@ -1,52 +1,39 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 
 const SeriesDetail = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
   const [series, setSeries] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const [selectedSeason, setSelectedSeason] = useState("");
-  const [seasonDetails, setSeasonDetails] = useState(null);
-  const [podcasts, setPodcasts] = useState([]);
 
   useEffect(() => {
-    fetch(`https://podcast-api.netlify.app/id/${id}`)
-      .then((response) => {
+    const fetchSeries = async () => {
+      try {
+        const response = await fetch(
+          `https://podcast-api.netlify.app/id/${id}`
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        return response.json();
-      })
-      .then((data) => {
+        const data = await response.json();
+        console.log(data); // Log the fetched data to verify its structure
         setSeries(data);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         setError(error);
         setLoading(false);
-      });
-  }, [id]);
+      }
+    };
 
-  const fetchSeasonDetails = (seasonId) => {
-    fetch(`https://podcast-api.netlify.app/season/${seasonId}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setSeasonDetails(data);
-        setPodcasts(data.episodes); 
-      })
-      .catch((error) => {
-        console.error("Error fetching season details:", error);
-      });
-  };
+    fetchSeries();
+  }, [id]);
 
   const handleFavoriteClick = () => {
     setIsFavorite(!isFavorite);
@@ -56,10 +43,8 @@ const SeriesDetail = () => {
     }, 2000);
   };
 
-  const handleSeasonChange = (e) => {
-    const seasonId = e.target.value;
-    setSelectedSeason(seasonId);
-    fetchSeasonDetails(seasonId);
+  const handleSeasonClick = (seasonId) => {
+    navigate(`/season/${seasonId}`);
   };
 
   if (loading) {
@@ -83,26 +68,6 @@ const SeriesDetail = () => {
       <p className="text-lg mb-4">{series.description}</p>
       <p className="text-sm mb-2">Last updated: {todayDate}</p>
       <p className="text-sm mb-4">Genre: {series.genre}</p>
-      <div className="mb-4">
-        <label htmlFor="season-select" className="block text-lg font-bold mb-2">
-          Select a season:
-        </label>
-        <select
-          id="season-select"
-          value={selectedSeason}
-          onChange={handleSeasonChange}
-          className="bg-gray-800 text-white p-2 rounded"
-        >
-          <option key="" value="">
-            -- Select a season --
-          </option>
-          {series.seasons.map((season) => (
-            <option key={season.id} value={season.id}>
-              {season.title}
-            </option>
-          ))}
-        </select>
-      </div>
       <div className="flex items-center">
         <button onClick={handleFavoriteClick} className="text-2xl">
           <FaHeart className={isFavorite ? "text-red-500" : "text-gray-500"} />
@@ -119,7 +84,7 @@ const SeriesDetail = () => {
           <div
             key={season.id}
             className="bg-white rounded-md shadow-md overflow-hidden cursor-pointer"
-            onClick={() => fetchSeasonDetails(season.id)}
+            onClick={() => handleSeasonClick(season.id)} // Pass season.id to handleSeasonClick
           >
             <img
               src={season.image}
@@ -127,28 +92,14 @@ const SeriesDetail = () => {
               className="w-full h-60 object-cover"
             />
             <div className="p-4">
-              <h3 className="text-xl font-bold mb-2 text-black">{season.title}</h3>
+              <h3 className="text-xl font-bold mb-2 text-black">
+                {season.title}
+              </h3>
               <p className="text-sm text-gray-700">{season.description}</p>
             </div>
           </div>
         ))}
       </div>
-
-      {seasonDetails && (
-        <div className="mt-8">
-          <h3 className="text-xl font-bold mb-2">Season Details</h3>
-          <p>{seasonDetails.description}</p>
-          <h4 className="text-lg font-bold mt-4">Episodes:</h4>
-          <ul className="list-disc list-inside mt-2">
-            {podcasts.map((podcast) => (
-              <li key={podcast.id} className="mb-2">
-                <p className="font-bold">{podcast.title}</p>
-                <p className="text-sm">{podcast.description}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };
