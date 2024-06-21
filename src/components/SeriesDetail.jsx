@@ -43,9 +43,10 @@ const SeriesDetail = () => {
     }, 2000);
   };
 
-  const handleSeasonClick = (seasonId) => {
-    navigate(`/season/${seasonId}`);
+  const handleSeasonClick = (showid) => {
+    navigate(`/season/${showid}/episodes`);
   };
+  
 
   if (loading) {
     return <div>Loading...</div>;

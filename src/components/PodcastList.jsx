@@ -69,7 +69,7 @@ const PodcastList = () => {
                 Last updated: {new Date(podcast.updated).toLocaleDateString()}
               </p>
               <p className="text-sm text-gray-700 text-center">
-                Seasons: {podcast.seasons.length}
+                Seasons: {podcast.seasons}
               </p>
             </div>
           ))
