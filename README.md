@@ -2,7 +2,7 @@
 
 This is a Podcast App that allows users to browse podcast series, view detailed information about each series, and explore episodes within each season of a series. Users can also add series to their favorites.
 
-Here's the link to my deployed app: (Podcast App)[https://ikanyengadams-podcast-app.netlify.app/podcasts]
+Here's the link to my deployed app: [Podcast App](https://ikanyengadams-podcast-app.netlify.app/podcasts)
 
 ## Features
 
@@ -60,3 +60,7 @@ Start the development server:
 
 ```bash
 npm start
+
+# Contact 
+
+You can contact me on [linkedin](https://www.linkedin.com/in/ikanyengadams/) or emil me @ikanyengadams2@gmail.com.
