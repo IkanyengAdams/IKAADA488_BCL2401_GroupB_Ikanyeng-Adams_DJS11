@@ -63,4 +63,4 @@ npm start
 
 # Contact 
 
-You can contact me on [linkedin](https://www.linkedin.com/in/ikanyengadams/) or emil me @ikanyengadams2@gmail.com.
+You can contact me on [LinkedIn](https://www.linkedin.com/in/ikanyengadams/) or email me @ikanyengadams2@gmail.com.
