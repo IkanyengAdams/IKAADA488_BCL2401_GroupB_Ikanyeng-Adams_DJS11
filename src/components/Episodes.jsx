@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const Episodes = () => {
   const { showId, seasonIndex } = useParams();
+  const navigate = useNavigate();
   const [episodes, setEpisodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentAudio, setCurrentAudio] = useState(null);
@@ -37,12 +38,22 @@ const Episodes = () => {
     setCurrentAudio(event.target);
   };
 
+  const handleBackClick = () => {
+    navigate(`/series/${showId}`);
+  };
+
   if (loading) return <div className="text-center mt-4">Loading...</div>;
   if (!episodes.length)
     return <div className="text-center mt-4">No episodes available</div>;
 
   return (
     <div className="p-4">
+      <button
+        onClick={handleBackClick}
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        Back to Series
+      </button>
       <h2 className="text-2xl font-bold mb-4">Episodes</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {episodes.map((episode) => (

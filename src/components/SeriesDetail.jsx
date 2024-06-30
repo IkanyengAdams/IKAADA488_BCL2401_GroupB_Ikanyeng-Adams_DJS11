@@ -43,6 +43,10 @@ const SeriesDetail = () => {
     navigate(`/series/${id}/season/${seasonIndex}/episodes`);
   };
 
+  const handleBackClick = () => {
+    navigate('/podcasts'); // Navigate back to the PodcastList component
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -50,6 +54,12 @@ const SeriesDetail = () => {
 
   return (
     <div className="p-4 w-full text-white">
+      <button
+        onClick={handleBackClick}
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        Back to Podcasts
+      </button>
       <h2 className="text-2xl font-bold mb-4">{series.title}</h2>
       <img
         src={series.image}

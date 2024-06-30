@@ -6,6 +6,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [searchVisible, setSearchVisible] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -14,6 +15,22 @@ const Sidebar = () => {
   const handleNavigation = (path) => {
     navigate(path);
     setSidebarVisible(false);
+  };
+
+  const handleSearchBlur = () => {
+    // Close the search input when it loses focus if there's no query
+    if (!searchQuery) {
+      setSearchVisible(false);
+    }
+  };
+
+  const handleSearchClick = (e) => {
+    // Prevent the input from closing when it's clicked
+    e.stopPropagation();
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -38,17 +55,23 @@ const Sidebar = () => {
             <img className="w-6" src={assets.home_icon} alt="Home" />
             <p className="font-bold">Home</p>
           </div>
-          <div
-            className="flex items-center gap-3 pl-8 cursor-pointer"
-            onClick={() => setSearchVisible(!searchVisible)}
-          >
-            <img className="w-6" src={assets.search_icon} alt="Search" />
+          <div className="flex items-center gap-3 pl-8 cursor-pointer relative">
+            <img
+              className="w-6"
+              src={assets.search_icon}
+              alt="Search"
+              onClick={() => setSearchVisible(!searchVisible)}
+            />
             <p className="font-bold">{searchVisible ? "" : "Search"}</p>
             {searchVisible && (
               <input
                 type="text"
                 placeholder="Search podcasts"
-                className="bg-white text-black px-4 py-1 rounded-full"
+                className="bg-white text-black px-4 py-1 rounded-full absolute left-10"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onBlur={handleSearchBlur}
+                onClick={handleSearchClick}
               />
             )}
           </div>
