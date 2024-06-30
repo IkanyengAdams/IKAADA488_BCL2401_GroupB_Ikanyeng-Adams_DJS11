@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import PodcastList from './PodcastList'; 
 import Favorites from './Favorites';
 import SeriesDetail from './SeriesDetail'; 
-import SeasonDetail from './SeasonDetail';
+import Episodes from './Episodes'; 
 
 const Display = () => {
     return (
@@ -12,7 +12,7 @@ const Display = () => {
                 <Route path="/podcasts" element={<PodcastList />} />
                 <Route path="/favorites" element={<Favorites />} /> 
                 <Route path="/series/:id" element={<SeriesDetail />} />
-                <Route path="/season/:seasonId/episodes" element={<SeasonDetail />} />
+                <Route path="/series/:showId/season/:seasonIndex/episodes" element={<Episodes />} />
             </Routes>
         </div>
     );
