@@ -44,7 +44,7 @@ const SeriesDetail = () => {
   };
 
   const handleBackClick = () => {
-    navigate('/podcasts'); // Navigate back to the PodcastList component
+    navigate('/podcasts');
   };
 
   if (loading) return <div>Loading...</div>;

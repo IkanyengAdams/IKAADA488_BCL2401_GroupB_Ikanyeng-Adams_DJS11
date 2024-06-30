@@ -4,8 +4,10 @@ import Navbar from "./Navbar";
 
 const PodcastList = () => {
   const [podcasts, setPodcasts] = useState([]);
+  const [filteredPodcasts, setFilteredPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetch("https://podcast-api.netlify.app/")
@@ -18,6 +20,7 @@ const PodcastList = () => {
       .then((data) => {
         const sortedData = data.sort((a, b) => a.title.localeCompare(b.title));
         setPodcasts(sortedData);
+        setFilteredPodcasts(sortedData);
         setLoading(false);
       })
       .catch((error) => {
@@ -41,19 +44,40 @@ const PodcastList = () => {
       }
     });
     setPodcasts(sortedPodcasts);
+    setFilteredPodcasts(sortedPodcasts);
+  };
+
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = podcasts.filter((podcast) =>
+      podcast.title.toLowerCase().includes(query)
+    );
+    setFilteredPodcasts(filtered);
   };
 
   return (
     <div className="p-4 w-full">
       <Navbar onSort={handleSort} />
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search podcasts"
+          className="bg-white text-black px-4 py-2 rounded-full w-full mt-3"
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+      </div>
       <h2 className="text-2xl font-bold mb-4">Podcasts you might like...</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {loading ? (
           <div>Loading...</div>
         ) : error ? (
           <div>Error: {error.message}</div>
+        ) : filteredPodcasts.length === 0 ? (
+          <div>No podcasts found</div>
         ) : (
-          podcasts.map((podcast) => (
+          filteredPodcasts.map((podcast) => (
             <div
               key={podcast.id}
               className="bg-white text-black rounded-lg shadow-md p-4 flex flex-col items-center cursor-pointer hover:scale-105 transition-transform duration-300"

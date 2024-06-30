@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { assets } from "../spotify-assets/assets/assets";
 
-const Sidebar = () => {
+const Sidebar = ({ onSearch }) => {
   const navigate = useNavigate();
   const [searchVisible, setSearchVisible] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -17,20 +17,9 @@ const Sidebar = () => {
     setSidebarVisible(false);
   };
 
-  const handleSearchBlur = () => {
-    // Close the search input when it loses focus if there's no query
-    if (!searchQuery) {
-      setSearchVisible(false);
-    }
-  };
-
-  const handleSearchClick = (e) => {
-    // Prevent the input from closing when it's clicked
-    e.stopPropagation();
-  };
-
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+    onSearch(e.target.value);
   };
 
   return (
@@ -70,8 +59,7 @@ const Sidebar = () => {
                 className="bg-white text-black px-4 py-1 rounded-full absolute left-10"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                onBlur={handleSearchBlur}
-                onClick={handleSearchClick}
+                onBlur={() => setSearchVisible(false)}
               />
             )}
           </div>

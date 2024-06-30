@@ -58,7 +58,7 @@ const Episodes = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {episodes.map((episode) => (
           <div key={episode.id} className="bg-white rounded-lg shadow-md p-4">
-            <h3 className="text-lg font-bold mb-2">{episode.title}</h3>
+            <h3 className="text-lg font-bold mb-2 text-black">{episode.title}</h3>
             <p className="text-sm text-gray-700 mb-2">{episode.description}</p>
             <audio controls className="w-full mb-2" onPlay={handlePlay}>
               <source src={episode.file} type="audio/mpeg" />
