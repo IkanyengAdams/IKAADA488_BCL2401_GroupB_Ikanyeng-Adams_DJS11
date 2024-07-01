@@ -8,7 +8,7 @@ const Episodes = () => {
   const [episodes, setEpisodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentAudio, setCurrentAudio] = useState(null);
-  const [favorite, setFavorite] = useState(null);
+  const [favorite, setFavorite] = useState([]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const Episodes = () => {
         }
         const data = await response.json();
         console.log("Fetched episodes data:", data);
-        const seasonEpisodes = data.seasons[seasonIndex]?.episodes || [];
+        const seasonEpisodes = data.seasons[seasonIndex - 1]?.episodes || [];
         setEpisodes(seasonEpisodes);
       } catch (error) {
         console.error("Error fetching episodes data:", error);
@@ -33,6 +33,8 @@ const Episodes = () => {
 
     fetchEpisodes();
   }, [showId, seasonIndex]);
+
+  console.log(showId, seasonIndex);
 
   const handlePlay = (event) => {
     if (currentAudio && currentAudio !== event.target) {
@@ -45,15 +47,38 @@ const Episodes = () => {
     navigate(`/series/${showId}`);
   };
 
+  const favoriteUniqueId = (episodeId) => {
+    const getSeasonId = seasonIndex ? `-${seasonIndex}` : "",
+      getEpisodeId = episodeId ? `-${episodeId}` : "";
+
+    return `${showId}${getSeasonId}${getEpisodeId}`;
+  };
+
   const handleFavoriteClick = (episodeId) => {
-    setFavorite((prevFavorite) => {
-      const newFavorite = prevFavorite === episodeId ? null : episodeId;
-      setMessage(newFavorite ? "Added to favorites" : "Removed from favorites");
+    const uniqueId = favoriteUniqueId(episodeId);
+    const favoriteAction = favorite.includes(uniqueId) ? "remove" : "add";
+
+    if (favoriteAction == "add") {
+      setMessage("Added to favorites");
       setTimeout(() => {
         setMessage("");
       }, 2000);
-      return newFavorite;
-    });
+
+      favorite.push(uniqueId);
+    }
+
+    if (favoriteAction == "remove") {
+      const index = favorite.indexOf(uniqueId);
+
+      setMessage("Removed from favorites");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+
+      favorite.splice(index, 1);
+    }
+
+    setFavorite(favorite);
   };
 
   if (loading) return <div className="text-center mt-4">Loading...</div>;
@@ -76,20 +101,27 @@ const Episodes = () => {
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {episodes.map((episode) => (
-          <div key={episode.id} className="bg-white rounded-lg shadow-md p-4">
-            <h3 className="text-lg font-bold mb-2 text-black">{episode.title}</h3>
+          <div
+            key={episode.episode}
+            className="bg-white rounded-lg shadow-md p-4"
+          >
+            <h3 className="text-lg font-bold mb-2 text-black">
+              {episode.title}
+            </h3>
             <p className="text-sm text-gray-700 mb-2">{episode.description}</p>
             <audio controls className="w-full mb-2" onPlay={handlePlay}>
               <source src={episode.file} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
             <button
-              onClick={() => handleFavoriteClick(episode.id)}
+              onClick={() => handleFavoriteClick(episode.episode)}
               className="text-2xl"
             >
               <FaHeart
                 className={
-                  favorite === episode.id ? "text-red-500" : "text-gray-500"
+                  favorite.includes(favoriteUniqueId(episode.episode))
+                    ? "text-red-500"
+                    : "text-gray-500"
                 }
               />
             </button>
