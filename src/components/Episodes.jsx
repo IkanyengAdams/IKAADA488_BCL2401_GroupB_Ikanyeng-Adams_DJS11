@@ -21,7 +21,6 @@ const Episodes = () => {
           throw new Error(`Error fetching episodes: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log("Fetched episodes data:", data);
         const seasonEpisodes = data.seasons[seasonIndex - 1]?.episodes || [];
         setEpisodes(seasonEpisodes);
       } catch (error) {
@@ -34,7 +33,10 @@ const Episodes = () => {
     fetchEpisodes();
   }, [showId, seasonIndex]);
 
-  console.log(showId, seasonIndex);
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    setFavorite(storedFavorites);
+  }, []);
 
   const handlePlay = (event) => {
     if (currentAudio && currentAudio !== event.target) {
@@ -48,37 +50,40 @@ const Episodes = () => {
   };
 
   const favoriteUniqueId = (episodeId) => {
-    const getSeasonId = seasonIndex ? `-${seasonIndex}` : "",
-      getEpisodeId = episodeId ? `-${episodeId}` : "";
-
+    const getSeasonId = seasonIndex ? `-${seasonIndex}` : "";
+    const getEpisodeId = episodeId ? `-${episodeId}` : "";
     return `${showId}${getSeasonId}${getEpisodeId}`;
   };
 
-  const handleFavoriteClick = (episodeId) => {
-    const uniqueId = favoriteUniqueId(episodeId);
+  const handleFavoriteClick = (episode) => {
+    const uniqueId = favoriteUniqueId(episode.episode);
     const favoriteAction = favorite.includes(uniqueId) ? "remove" : "add";
 
-    if (favoriteAction == "add") {
+    let updatedFavorites;
+    if (favoriteAction === "add") {
       setMessage("Added to favorites");
-      setTimeout(() => {
-        setMessage("");
-      }, 2000);
-
-      favorite.push(uniqueId);
-    }
-
-    if (favoriteAction == "remove") {
-      const index = favorite.indexOf(uniqueId);
-
+      updatedFavorites = [...favorite, uniqueId];
+    } else {
       setMessage("Removed from favorites");
-      setTimeout(() => {
-        setMessage("");
-      }, 2000);
-
-      favorite.splice(index, 1);
+      updatedFavorites = favorite.filter((id) => id !== uniqueId);
     }
 
-    setFavorite(favorite);
+    setFavorite(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
+    // Save the episode details in local storage
+    localStorage.setItem(
+      `favorite-${uniqueId}`,
+      JSON.stringify({
+        title: episode.title,
+        description: episode.description,
+        file: episode.file,
+      })
+    );
+
+    setTimeout(() => {
+      setMessage("");
+    }, 2000);
   };
 
   if (loading) return <div className="text-center mt-4">Loading...</div>;
@@ -114,7 +119,7 @@ const Episodes = () => {
               Your browser does not support the audio element.
             </audio>
             <button
-              onClick={() => handleFavoriteClick(episode.episode)}
+              onClick={() => handleFavoriteClick(episode)}
               className="text-2xl"
             >
               <FaHeart

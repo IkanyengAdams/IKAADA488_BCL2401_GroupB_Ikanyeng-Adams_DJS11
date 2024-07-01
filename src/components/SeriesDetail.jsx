@@ -39,8 +39,8 @@ const SeriesDetail = () => {
     }, 2000);
   };
 
-  const handleSeasonClick = (seasonId, seasonIndex) => {
-    navigate(`/series/${id}/season/${seasonIndex}/episodes`);
+  const handleSeasonClick = (showId, seasonId, seasonIndex) => {
+    navigate(`season/${seasonId}/episodes`);
   };
 
   const handleBackClick = () => {
@@ -97,7 +97,7 @@ const SeriesDetail = () => {
             <div
               key={season.id}
               className="bg-white rounded-md shadow-md overflow-hidden cursor-pointer"
-              onClick={() => handleSeasonClick(season.id, index)}
+              onClick={() => handleSeasonClick(id, season.season, index)}
             >
               <img
                 src={season.image}
