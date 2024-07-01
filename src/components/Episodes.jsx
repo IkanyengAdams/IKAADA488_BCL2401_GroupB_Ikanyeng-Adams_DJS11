@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { FaHeart } from "react-icons/fa";
 
 const Episodes = () => {
   const { showId, seasonIndex } = useParams();
@@ -7,6 +8,8 @@ const Episodes = () => {
   const [episodes, setEpisodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentAudio, setCurrentAudio] = useState(null);
+  const [favorite, setFavorite] = useState(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchEpisodes = async () => {
@@ -31,6 +34,13 @@ const Episodes = () => {
     fetchEpisodes();
   }, [showId, seasonIndex]);
 
+  useEffect(() => {
+    const storedFavorite = localStorage.getItem("favoriteEpisode");
+    if (storedFavorite) {
+      setFavorite(JSON.parse(storedFavorite));
+    }
+  }, []);
+
   const handlePlay = (event) => {
     if (currentAudio && currentAudio !== event.target) {
       currentAudio.pause();
@@ -40,6 +50,21 @@ const Episodes = () => {
 
   const handleBackClick = () => {
     navigate(`/series/${showId}`);
+  };
+
+  const handleFavoriteClick = (episode) => {
+    setFavorite((prevFavorite) => {
+      const newFavorite = prevFavorite?.id === episode.id ? null : episode;
+      setMessage(newFavorite ? "Added to favorites" : "Removed from favorites");
+      localStorage.setItem(
+        "favoriteEpisode",
+        newFavorite ? JSON.stringify(newFavorite) : ""
+      );
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+      return newFavorite;
+    });
   };
 
   if (loading) return <div className="text-center mt-4">Loading...</div>;
@@ -55,6 +80,11 @@ const Episodes = () => {
         Back to Series
       </button>
       <h2 className="text-2xl font-bold mb-4">Episodes</h2>
+      {message && (
+        <div className="text-center mb-4 p-2 bg-green-500 text-white rounded-lg">
+          {message}
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {episodes.map((episode) => (
           <div key={episode.id} className="bg-white rounded-lg shadow-md p-4">
@@ -64,6 +94,16 @@ const Episodes = () => {
               <source src={episode.file} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
+            <button
+              onClick={() => handleFavoriteClick(episode)}
+              className="text-2xl"
+            >
+              <FaHeart
+                className={
+                  favorite?.id === episode.id ? "text-red-500" : "text-gray-500"
+                }
+              />
+            </button>
           </div>
         ))}
       </div>
