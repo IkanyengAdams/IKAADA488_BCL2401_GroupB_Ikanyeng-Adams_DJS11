@@ -34,13 +34,6 @@ const Episodes = () => {
     fetchEpisodes();
   }, [showId, seasonIndex]);
 
-  useEffect(() => {
-    const storedFavorite = localStorage.getItem("favoriteEpisode");
-    if (storedFavorite) {
-      setFavorite(JSON.parse(storedFavorite));
-    }
-  }, []);
-
   const handlePlay = (event) => {
     if (currentAudio && currentAudio !== event.target) {
       currentAudio.pause();
@@ -52,14 +45,10 @@ const Episodes = () => {
     navigate(`/series/${showId}`);
   };
 
-  const handleFavoriteClick = (episode) => {
+  const handleFavoriteClick = (episodeId) => {
     setFavorite((prevFavorite) => {
-      const newFavorite = prevFavorite?.id === episode.id ? null : episode;
+      const newFavorite = prevFavorite === episodeId ? null : episodeId;
       setMessage(newFavorite ? "Added to favorites" : "Removed from favorites");
-      localStorage.setItem(
-        "favoriteEpisode",
-        newFavorite ? JSON.stringify(newFavorite) : ""
-      );
       setTimeout(() => {
         setMessage("");
       }, 2000);
@@ -95,12 +84,12 @@ const Episodes = () => {
               Your browser does not support the audio element.
             </audio>
             <button
-              onClick={() => handleFavoriteClick(episode)}
+              onClick={() => handleFavoriteClick(episode.id)}
               className="text-2xl"
             >
               <FaHeart
                 className={
-                  favorite?.id === episode.id ? "text-red-500" : "text-gray-500"
+                  favorite === episode.id ? "text-red-500" : "text-gray-500"
                 }
               />
             </button>

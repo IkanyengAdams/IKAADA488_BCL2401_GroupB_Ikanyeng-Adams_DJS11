@@ -108,7 +108,12 @@ const SeriesDetail = () => {
                 <h3 className="text-xl font-bold mb-2 text-black">
                   {season.title}
                 </h3>
-                <p className="text-sm text-gray-700">{season.description}</p>
+                <p className="text-sm text-gray-700 mb-2">
+                  {season.description}
+                </p>
+                <p className="text-sm text-gray-700">
+                  Episodes: {season.episodes.length}
+                </p>
               </div>
             </div>
           ))
