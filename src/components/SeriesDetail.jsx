@@ -39,7 +39,7 @@ const SeriesDetail = () => {
     }, 2000);
   };
 
-  const handleSeasonClick = (showId, seasonId, seasonIndex) => {
+  const handleSeasonClick = (showId, seasonId,) => {
     navigate(`season/${seasonId}/episodes`);
   };
 
