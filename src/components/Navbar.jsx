@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { assets } from "../spotify-assets/assets/assets";
+import { assets } from "../assets/assets/assets";
 
 const Navbar = ({ onSort }) => {
   const navigate = useNavigate();

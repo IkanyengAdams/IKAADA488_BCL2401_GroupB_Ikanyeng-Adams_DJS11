@@ -1,13 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { assets } from "../spotify-assets/assets/assets";
+import { assets } from "../assets/assets/assets";
 
-const Sidebar = ({ onSearch }) => {
+const Sidebar = () => {
   const navigate = useNavigate();
-  const [searchVisible, setSearchVisible] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -16,11 +14,6 @@ const Sidebar = ({ onSearch }) => {
   const handleNavigation = (path) => {
     navigate(path);
     setSidebarVisible(false);
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-    onSearch(e.target.value);
   };
 
   return (
@@ -46,23 +39,7 @@ const Sidebar = ({ onSearch }) => {
             <p className="font-bold">Home</p>
           </div>
           <div className="flex items-center gap-3 pl-8 cursor-pointer relative">
-            <img
-              className="w-6"
-              src={assets.search_icon}
-              alt="Search"
-              onClick={() => setSearchVisible(!searchVisible)}
-            />
-            <p className="font-bold">{searchVisible ? "" : "Search"}</p>
-            {searchVisible && (
-              <input
-                type="text"
-                placeholder="Search podcasts"
-                className="bg-white text-black px-4 py-1 rounded-full absolute left-10"
-                value={searchQuery}
-                onChange={handleSearchChange}
-                onBlur={() => setSearchVisible(false)}
-              />
-            )}
+            <div className="w-full h-2 bg-black"></div>
           </div>
         </div>
         <div className="h-[85%] rounded">
